@@ -7,37 +7,30 @@ from allauth.account import views
 from app.models import Staff, Booking
 from django.utils import timezone
 
-
 class SignupView(views.SignupView):
     template_name = 'accounts/signup.html'
     form_class = SignupUserForm
 
-
 class LoginView(views.LoginView):
     template_name = 'accounts/login.html'
 
-
 class LogoutView(views.LogoutView):
     template_name = 'accounts/logout.html'
-
     def post(self, *args, **kwargs):
         if self.request.user.is_authenticated:
             self.logout()
         return redirect('/')
 
-
 class ProfileView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         user_data = CustomUser.objects.get(id=request.user.id)
-        staff_data = Staff.objects.get(user=user_data)
+        staff_data = Staff.objects.filter(user=user_data).first()
         booking_data = Booking.objects.filter(staff=staff_data, start__gte=timezone.now())
-
         return render(request, 'accounts/profile.html', {
             'user_data': user_data,
             'staff_data': staff_data,
             'booking_data': booking_data,
         })
-
 
 class ProfileEditView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -51,7 +44,6 @@ class ProfileEditView(LoginRequiredMixin, View):
                 'image': user_data.image
             }
         )
-
         return render(request, 'accounts/profile_edit.html', {
             'form': form,
             'user_data': user_data

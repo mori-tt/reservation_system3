@@ -3,7 +3,6 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import UserManager, PermissionsMixin
 from django.utils import timezone
 
-
 class UserManager(UserManager):
     def _create_user(self, email, password, **extra_fields):
         email = self.normalize_email(email)
@@ -20,21 +19,18 @@ class UserManager(UserManager):
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
-
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Superuser must have is_staff=True.')
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
-
         return self._create_user(email, password, **extra_fields)
-
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField('メールアドレス', unique=True)
     first_name = models.CharField(('姓'), max_length=30)
     last_name = models.CharField(('名'), max_length=30)
-    description = models.TextField('自己紹介', default="", blank=True)
-    image = models.ImageField(upload_to='images', verbose_name='プロフィール画像', null=True, blank=True)
+    description = models.TextField('備考', default="", blank=True)
+    image = models.ImageField(upload_to='images', verbose_name='画像', null=True, blank=True)
 
     is_staff = models.BooleanField(
         ('staff status'),

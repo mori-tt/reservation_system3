@@ -8,7 +8,6 @@ from django.views.decorators.http import require_POST
 from app.forms import BookingForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-
 class StoreView(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -25,7 +24,6 @@ class StoreView(View):
             'store_data': store_data,
         })
 
-
 class StaffView(View):
     def get(self, request, *args, **kwargs):
         store_data = get_object_or_404(Store, id=self.kwargs['pk'])
@@ -36,13 +34,9 @@ class StaffView(View):
             'staff_data': staff_data,
         })
 
-
 class CalendarView(View):
     def get(self, request, *args, **kwargs):
-        # staff_data = Staff.objects.filter(id=self.kwargs['pk']).select_related('user').select_related('store')[0]
-        staff_data = Staff.objects.filter(id=request.user.id).select_related('user').select_related('store').first()
-        if staff_data is not None: booking_data = Booking.objects.filter(staff=staff_data).exclude(Q(start__gt=end_time) | Q(end__lt=start_time))
-        else: pass
+        staff_data = Staff.objects.filter(id=self.kwargs['pk']).select_related('user').select_related('store')[0]
         today = date.today()
         year = self.kwargs.get('year')
         month = self.kwargs.get('month')
@@ -88,10 +82,7 @@ class CalendarView(View):
 
 class BookingView(View):
     def get(self, request, *args, **kwargs):
-        # staff_data = Staff.objects.filter(id=self.kwargs['pk']).select_related('user').select_related('store')[0]
-        staff_data = Staff.objects.filter(id=request.user.id).select_related('user').select_related('store').first()
-        if staff_data is not None: booking_data = Booking.objects.filter(staff=staff_data).exclude(Q(start__gt=end_time) | Q(end__lt=start_time))
-        else: pass
+        staff_data = Staff.objects.filter(id=self.kwargs['pk']).select_related('user').select_related('store')[0]
         year = self.kwargs.get('year')
         month = self.kwargs.get('month')
         day = self.kwargs.get('day')
@@ -147,10 +138,7 @@ class ThanksView(TemplateView):
 
 class MyPageView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        # staff_data = Staff.objects.filter(id=request.user.id).select_related('user').select_related('store')[0]
         staff_data = Staff.objects.filter(id=request.user.id).select_related('user').select_related('store').first()
-        if staff_data is not None: booking_data = Booking.objects.filter(staff=staff_data).exclude(Q(start__gt=end_time) | Q(end__lt=start_time))
-        else: pass
         year = self.kwargs.get('year')
         month = self.kwargs.get('month')
         day = self.kwargs.get('day')
@@ -160,13 +148,13 @@ class MyPageView(LoginRequiredMixin, View):
         end_day = days[-1]
 
         calendar = {}
-        # 10時～20時
-        for hour in range(10, 21):
+        # 12時～20時
+        for hour in range(12, 21):
             row = {}
             for day_ in days:
                 row[day_] = ""
             calendar[hour] = row
-        start_time = make_aware(datetime.combine(start_day, time(hour=10, minute=0, second=0)))
+        start_time = make_aware(datetime.combine(start_day, time(hour=12, minute=0, second=0)))
         end_time = make_aware(datetime.combine(end_day, time(hour=20, minute=0, second=0)))
         booking_data = Booking.objects.filter(staff=staff_data).exclude(Q(start__gt=end_time) | Q(end__lt=start_time))
         for booking in booking_data:
@@ -190,7 +178,6 @@ class MyPageView(LoginRequiredMixin, View):
             'day': day,
         })
 
-
 @require_POST
 def Holiday(request, year, month, day, hour):
     staff_data = Staff.objects.get(id=request.user.id)
@@ -210,7 +197,6 @@ def Holiday(request, year, month, day, hour):
     if weekday != 6:
         start_date = start_date - timedelta(days=weekday + 1)
     return redirect('mypage', year=start_date.year, month=start_date.month, day=start_date.day)
-
 
 @require_POST
 def Delete(request, year, month, day, hour):

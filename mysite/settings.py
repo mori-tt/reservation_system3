@@ -38,13 +38,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "widget_tweaks",  # 追加
-    "app",  # 追加
-    "accounts",  # 追加
-    "django.contrib.sites",  # 追加
-    "allauth",  # 追加
-    "allauth.account",  # 追加
-    "allauth.socialaccount",  # 追加
+    "widget_tweaks",
+    "app",  
+    "accounts",  
+    "django.contrib.sites",  
+    "allauth",  
+    "allauth.account",  
+    "allauth.socialaccount",  
 ]
 
 MIDDLEWARE = [
@@ -55,7 +55,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'allauth.account.middleware.AccountMiddleware',
+    # "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "mysite.urls"
@@ -118,6 +118,8 @@ TIME_ZONE = "Asia/Tokyo"
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
 
 
@@ -142,6 +144,5 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 
-# 追加
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
