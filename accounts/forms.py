@@ -7,12 +7,26 @@ class ProfileForm(forms.Form):
     description = forms.CharField(label='備考', widget=forms.Textarea(), required=False)
     image = forms.ImageField(required=False, )
 
+# スタッフサインアップ
 class SignupUserForm(SignupForm):
     first_name = forms.CharField(max_length=30, label='姓')
     last_name = forms.CharField(max_length=30, label='名')
     def save(self, request):
-        user = super(SignupUserForm, self).save(request)
+        user = super().save(request) 
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
+        user.user_type = '1'  # スタッフ
+        user.save()
+        return user
+
+# カスタマーサインアップ
+class CusSignupUserForm(SignupForm):
+    first_name = forms.CharField(max_length=30, label='姓')
+    last_name = forms.CharField(max_length=30, label='名')
+    def save(self, request):
+        user = super().save(request) 
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.user_type = '0'  # カスタマー
         user.save()
         return user

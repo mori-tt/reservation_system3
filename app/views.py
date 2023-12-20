@@ -8,6 +8,7 @@ from django.views.decorators.http import require_POST
 from app.forms import BookingForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+# class StoreView(LoginRequiredMixin,View):
 class StoreView(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -24,11 +25,26 @@ class StoreView(View):
             'store_data': store_data,
         })
 
+class cusStoreView(LoginRequiredMixin,View):
+    def get(self, request, *args, **kwargs):
+        # if request.user.is_authenticated:
+            start_date = date.today()
+            weekday = start_date.weekday()
+            # カレンダー日曜日開始
+            if weekday != 6:
+                start_date = start_date - timedelta(days=weekday + 1)
+            return redirect('mypage', start_date.year, start_date.month, start_date.day)
+
+            store_data = Store.objects.all()
+
+        # return render(request, 'app/store.html', {
+        #     'store_data': store_data,
+        # })
+
 class StaffView(View):
     def get(self, request, *args, **kwargs):
         store_data = get_object_or_404(Store, id=self.kwargs['pk'])
         staff_data = Staff.objects.filter(store=store_data).select_related('user')
-
         return render(request, 'app/staff.html', {
             'store_data': store_data,
             'staff_data': staff_data,
@@ -53,7 +69,7 @@ class CalendarView(View):
 
         calendar = {}
         # 10時～20時
-        for hour in range(10, 21):
+        for hour in range(12, 21):
             row = {}
             for day in days:
                 row[day] = True
