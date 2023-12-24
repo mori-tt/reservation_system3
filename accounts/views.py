@@ -12,11 +12,18 @@ from django.utils import timezone
 class SignupView(views.SignupView):
     template_name = 'accounts/signup.html'
     form_class = SignupUserForm
-    def form_valid(self, form):
-        if self.request.user.user_type == '1':  # スタッフ
-            return redirect('store.html')
-        else:  
-            return redirect('/')
+    # def form_valid(self, form):
+    #     form.save()
+    #     return redirect('store')
+
+# class SignupView(views.SignupView):
+#     template_name = 'accounts/signup.html'
+#     form_class = SignupUserForm
+#     def form_valid(self, form):
+#         if self.request.user.user_type == '1':  # スタッフ
+#             return redirect('store.html')
+#         else:  
+#             return redirect('accounts/signup.html')
 
 # class SignupView(views.SignupView):
 #     template_name = 'accounts/signup.html'
@@ -26,30 +33,40 @@ class SignupView(views.SignupView):
 #         self.user = form.save(self.request)
 #         return redirect(self.get_success_url('store.html'))
 
+
 # カスタマーサインアップビュー
+class CusSignupView(views.SignupView):
+        template_name = 'accounts/cus_signup.html'
+        form_class = CusSignupUserForm
+        # def form_valid(self, form):
+        #     form.save()
+        #     return redirect('store')
 # class UserSignupView(views.SignupView):
 #     template_name = 'accounts/user_signup.html'
 #     form_class = SignupUserForm
-class CusSignupView(views.SignupView):
-    template_name = 'accounts/cus_signup.html'
-    form_class = CusSignupUserForm
-
-    def form_valid(self, form):
-        self.user = form.save(self.request)
-        return redirect(self.get_success_url())
-
-# スタッフログインビュー
-class LoginView(views.LoginView):
-    template_name = 'accounts/login.html'
-# class LoginView(views.LoginView):
-#     template_name = 'accounts/login.html'
+# class CusSignupView(views.SignupView):
+#     template_name = 'accounts/cus_signup.html'
+#     form_class = CusSignupUserForm
 
 #     def form_valid(self, form):
-#         super().form_valid(form)
-#         if self.request.user.user_type == '1':  # スタッフ
-#             return redirect('store.html')
-#         else:  
+#         if self.request.user.user_type == '0':  # カスタマー
 #             return redirect('/')
+#         else:  
+#             return redirect('accounts/cus_signup.html')
+
+
+# スタッフログインビュー
+# class LoginView(views.LoginView):
+#     template_name = 'accounts/login.html'
+class LoginView(views.LoginView):
+    template_name = 'accounts/login.html'
+
+    # def form_valid(self, form):
+    #     super().form_valid(form)
+    #     if self.request.user.user_type == '1':  # スタッフ
+    #         return redirect('store')
+    #     else: 
+    #         return redirect('login')
 
 # カスタマーログインビュー
 # class UserLoginView(views.LoginView):
@@ -60,9 +77,9 @@ class CusLoginView(views.LoginView):
     def form_valid(self, form):
         super().form_valid(form)
         if self.request.user.user_type == '0':  # カスタマー
-            return redirect('/')
+            return redirect('store')
         else:
-            return redirect('/')
+            return redirect('cus_login')
 
 # ログアウトビュー
 class LogoutView(views.LogoutView):

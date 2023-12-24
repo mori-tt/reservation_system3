@@ -35,7 +35,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(('名'), max_length=30)
     description = models.TextField('備考', default="", blank=True)
     image = models.ImageField(upload_to='images', verbose_name='画像', null=True, blank=True)
-    user_type = models.CharField(choices=USER_TYPE_CHOICES, default="1", max_length=1)
+    # user_type = models.CharField(choices=USER_TYPE_CHOICES, default="1", max_length=1)
     is_staff = models.BooleanField(
         ('staff status'),
         default=False,

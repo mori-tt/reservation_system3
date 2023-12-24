@@ -1,4 +1,6 @@
-{% extends "app/base.html" %} {% block content %}
+{% extends "app/base.html" %}
+
+{% block content %}
 <div class="text-center my-5">
     <div class="mb-3">
         <h1>予約</h1>
@@ -18,13 +20,15 @@
             <thead class="thead-light">
                 <tr>
                     <th></th>
-                    {% for day in days %} {% if day.weekday == 5 %}
+                    {% for day in days %}
+                    {% if day.weekday == 5 %}
                     <th scope="col" class="text-primary">{{ day | date:"d(D)" }}</th>
                     {% elif day.weekday == 6 %}
                     <th scope="col" class="text-danger">{{ day | date:"d(D)" }}</th>
                     {% else %}
                     <th scope="col">{{ day | date:"d(D)" }}</th>
-                    {% endif %} {% endfor %}
+                    {% endif %}
+                    {% endfor %}
                 </tr>
             </thead>
             <tbody>
@@ -39,7 +43,8 @@
                             {% csrf_token %}
                             <button class="btn btn-light" type="submit">出勤</button>
                         </form>
-                        {% else %} {% if book == None %}
+                        {% else %}
+                        {% if book == None %}
                         <p class="mb-0">休み</p>
                         {% else %}
                         <p class="mb-0 font-weight-bold text-success">{{ book }}様</p>
@@ -60,12 +65,10 @@
 
     <div class="row">
         <div class="col-md-3 mb-4 text-center mypage">
-            {% if staff_data.user.image %}
-            <img class="mb-3" src="{{ staff_data.user.image.url }}" class="img-fluid" alt="" />
+            {% if staff.image %}
+            <img class="mb-3" src="/{{ staff.image.url }}" class="img-fluid" alt="">
             {% endif %}
-            <p>
-                {{ staff_data.store.name }}店：{{ staff_data.user.first_name }} {{ staff_data.user.last_name }}
-            </p>
+            <p>{{ staff.store.name }}店：{{ staff.user.first_name }} {{ staff.user.last_name }}</p>
         </div>
 
         <div class="col-md-9 mb-4">
@@ -73,7 +76,7 @@
                 <div class="card-body px-2 py-1">
                     <div class="p-4 text-left">
                         <h3>今週の予約</h3>
-                        <hr />
+                        <hr>
                         <table class="table">
                             <thead class="thead-light">
                                 <tr>
@@ -84,7 +87,7 @@
                             </thead>
                             <tbody>
                                 {% for booking in booking_data %}
-                                {% if booking.first_name != none %}
+                                {% if booking.first_name != None %}
                                 <tr>
                                     <td>{{ booking.first_name }} {{ booking.last_name }}様</td>
                                     <td>{{ booking.start }}</td>
