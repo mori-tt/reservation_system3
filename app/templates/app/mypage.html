@@ -66,9 +66,9 @@
     <div class="row">
         <div class="col-md-3 mb-4 text-center mypage">
             {% if staff.image %}
-            <img class="mb-3" src="/{{ staff.image.url }}" class="img-fluid" alt="">
+            <img class="mb-3" src="/{{ staff_data.user.image.url }}" class="img-fluid" alt="">
             {% endif %}
-            <p>{{ staff.store.name }}店：{{ staff.user.first_name }} {{ staff.user.last_name }}</p>
+            <p>{{ staff_data.store.name }}店：{{ staff_data.user.first_name }} {{ staff_data.user.last_name }}</p>
         </div>
 
         <div class="col-md-9 mb-4">

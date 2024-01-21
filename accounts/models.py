@@ -25,10 +25,10 @@ class UserManager(UserManager):
             raise ValueError('Superuser must have is_superuser=True.')
         return self._create_user(email, password, **extra_fields)
 
-USER_TYPE_CHOICES = (
-    ("0", "カスタマー"),
-    ("1", "スタッフ"),
-)
+# USER_TYPE_CHOICES = (
+#     ("0", "カスタマー"),
+#     ("1", "スタッフ"),
+# )
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField('メールアドレス', unique=True)
     first_name = models.CharField(('姓'), max_length=30)
